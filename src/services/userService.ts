@@ -1,10 +1,27 @@
 import { findUser, insertUser } from "@/repositories/userRepository";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export async function createUser(email: string, password: string) {
   const user = await findUser(email);
-  if (user) throw "Unprocessable"
+  if (user) throw "Unprocessable";
   const hashedPassword = await bcrypt.hash(password, 10);
 
   await insertUser(email, hashedPassword);
+}
+
+export async function checkUser(email: string, password: string) {
+  const user = await findUser(email);
+  if (!user) throw "Unprocessable";
+
+  const comparePassword = await bcrypt.compare(password, user.password)
+  if (!comparePassword) throw "Unauthorized";
+
+  return user;
+}
+
+export async function generateToken(userId: string) {
+  const token = jwt.sign(userId, process.env.JWT_SECRET)
+
+  return token;
 }
