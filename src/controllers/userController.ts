@@ -11,6 +11,7 @@ export async function postUser(req: Request, res: Response) {
     return res.sendStatus(httpStatus.CREATED);
   } catch (error) {
     console.log(error.message)
+    if (error === "Unprocessable") return res.sendStatus(httpStatus.UNPROCESSABLE_ENTITY);
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 }
