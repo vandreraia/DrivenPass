@@ -5,6 +5,7 @@ import cors from "cors";
 import { userRouter } from "./routers/userRouter";
 import { handleApplicationErrors } from "@/middlewares";
 import { loadEnv, connectDb, disconnectDB } from "@/config";
+import { credentialRouter } from "./routers/credetialRouter";
 
 loadEnv();
 
@@ -14,6 +15,7 @@ app
   .use(express.json())
   .get("/health", (_req, res) => res.send("OK!"))
   .use("/user", userRouter)
+  .use("/credential", credentialRouter)
   .use(handleApplicationErrors);
 
 export function init(): Promise<Express> {

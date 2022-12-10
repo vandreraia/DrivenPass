@@ -30,7 +30,7 @@ export async function signIn(req: Request, res: Response) {
     return res.status(httpStatus.OK).send(data);
   } catch (error) {
     if (error === "Unprocessable") return res.sendStatus(httpStatus.UNPROCESSABLE_ENTITY);
-    if (error === "Unauthorized") return res.sendStatus(httpStatus.UNAUTHORIZED)
+    if (error === "UNAUTHORIZED") return res.sendStatus(httpStatus.UNAUTHORIZED);
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 }
