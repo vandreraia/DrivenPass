@@ -9,7 +9,7 @@ export default function getUserIdByToken(authorization: string) {
 
   const token = authorization?.replace("Bearer ", "");
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const decoded = jwt.verify(token, process.env.SECRET);
 
   return decoded;
 };

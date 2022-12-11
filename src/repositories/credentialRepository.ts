@@ -12,11 +12,27 @@ export async function insertCredential(title: string, username: string, password
   })
 }
 
-export async function findCredentialByUserIdAndTitle(userId:number, title: string) {
+export async function findCredentialByUserIdAndTitle(userId: number, title: string) {
   return prisma.credential.findFirst({
     where: {
       userId,
       title
+    }
+  })
+}
+
+export async function findCredentialById(id: number) {
+  return prisma.credential.findFirst({
+    where: {
+      id
+    }
+  })
+}
+
+export async function findCredential(userId: number) {
+  return prisma.credential.findMany({
+    where: {
+      userId
     }
   })
 }

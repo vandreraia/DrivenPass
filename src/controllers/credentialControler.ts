@@ -1,4 +1,4 @@
-import { postCredential } from "@/services/credentialService";
+import { findCredential, findCredentialById, postCredential } from "@/services/credentialService";
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 
@@ -11,6 +11,21 @@ export async function createCredential(req: Request, res: Response) {
     return res.sendStatus(httpStatus.CREATED);
   } catch (error) {
     if (error === "CONFLICT") return res.sendStatus(httpStatus.CONFLICT);
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+}
+
+export async function getCredential(req: Request, res: Response) {
+  const { authorization } = req.headers;
+  const { id } = req.query;
+
+  try {
+    const credential = id ? await findCredentialById(Number(id), authorization) : await findCredential(authorization);
+
+    return res.status(httpStatus.OK).send(credential)
+  } catch (error) {
+    if (error === "CONFLICT") return res.sendStatus(httpStatus.CONFLICT);
+    if (error === "NOT_FOUND") return res.sendStatus(httpStatus.NOT_FOUND)
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 }
