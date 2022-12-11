@@ -18,8 +18,8 @@ export async function postCredential(title: string, username: string, password: 
 export async function findCredentialById(id: number, authorization: string) {
   const userId = Number(getUserIdByToken(authorization));
   const credential = await credentialRepository.findCredentialById(id);
-  if (userId !== credential.userId) throw "CONFLICT";
   if (!credential) throw "NOT_FOUND";
+  if (userId !== credential.userId) throw "CONFLICT";
   
   decrypt(credential);
 
@@ -42,4 +42,13 @@ function decrypt(credential: Credential) {
   credential.password = decryptedPassword;
 
   return credential;
+}
+
+export async function removeCredential(id: number, authorization: string) {
+  const userId = Number(getUserIdByToken(authorization));
+  const credential = await credentialRepository.findCredentialById(id);
+  if (!credential) throw "NOT_FOUND";
+  if (userId !== credential.userId) throw "CONFLICT";
+
+  await credentialRepository.removeCredential(id);
 }
