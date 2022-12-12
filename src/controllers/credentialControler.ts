@@ -24,7 +24,7 @@ export async function getCredential(req: Request, res: Response) {
 
     return res.status(httpStatus.OK).send(credential)
   } catch (error) {
-    if (error === "CONFLICT") return res.sendStatus(httpStatus.CONFLICT);
+    if (error === "FORBIDDEN") return res.sendStatus(httpStatus.FORBIDDEN);
     if (error === "NOT_FOUND") return res.sendStatus(httpStatus.NOT_FOUND);
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }

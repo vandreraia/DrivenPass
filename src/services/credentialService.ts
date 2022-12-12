@@ -19,7 +19,7 @@ export async function findCredentialById(id: number, authorization: string) {
   const userId = Number(getUserIdByToken(authorization));
   const credential = await credentialRepository.findCredentialById(id);
   if (!credential) throw "NOT_FOUND";
-  if (userId !== credential.userId) throw "CONFLICT";
+  if (userId !== credential.userId) throw "FORBIDDEN";
 
   decrypt(credential);
 

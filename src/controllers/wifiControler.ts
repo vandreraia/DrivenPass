@@ -1,15 +1,17 @@
-import { insertWifi } from "@/services/wifiService";
+import { findWifi, findWifiById, insertWifi } from "@/services/wifiService";
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 
 export async function getWifi(req: Request, res: Response) {
   const { authorization } = req.headers;
+  const { id } = req.query;
 
   try {
+    const wifi = id ? await findWifiById(Number(id), authorization) : await findWifi(authorization);
 
-    return res.sendStatus(httpStatus.OK)
+    return res.status(httpStatus.OK).send(wifi)
   } catch (error) {
-    if (error === "CONFLICT") return res.sendStatus(httpStatus.CONFLICT);
+    if (error === "FORBIDDEN") return res.sendStatus(httpStatus.FORBIDDEN);
     if (error === "NOT_FOUND") return res.sendStatus(httpStatus.NOT_FOUND);
     return res.sendStatus(httpStatus.BAD_REQUEST)
   }

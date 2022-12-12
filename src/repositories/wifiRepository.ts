@@ -20,6 +20,18 @@ export async function findWifiByUserIdAndTitle(userId: number, title: string) {
   })
 }
 
-export async function findWifi() {
-  return prisma.network
+export async function findWifiByUserId(userId: number) {
+  return prisma.network.findMany({
+    where: {
+      userId
+    }
+  })
+}
+
+export async function findWifiById(id:number) {
+ return prisma.network.findFirst({
+  where: {
+    id
+  }
+ })
 }
