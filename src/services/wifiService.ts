@@ -45,3 +45,13 @@ function decrypt(wifi: Network) {
 
   return wifi;
 }
+
+export async function deleteWifi(id: number, authorization: string) {
+  const userId = Number(getUserIdByToken(authorization));
+
+  if (!id) throw "NOT_FOUND";
+
+  const wifi = await wifiRepository.findWifiById(id);
+  if (!wifi) throw "NOT_FOUND";
+  if (wifi.userId !== userId) throw "FORBIDDEN";
+}

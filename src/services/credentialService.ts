@@ -46,6 +46,9 @@ function decrypt(credential: Credential) {
 
 export async function removeCredential(id: number, authorization: string) {
   const userId = Number(getUserIdByToken(authorization));
+
+  if (!id) throw "NOT_FOUND";
+
   const credential = await credentialRepository.findCredentialById(id);
   if (!credential) throw "NOT_FOUND";
   if (userId !== credential.userId) throw "CONFLICT";
