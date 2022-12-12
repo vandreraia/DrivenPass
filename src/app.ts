@@ -15,7 +15,7 @@ app
   .use(cors())
   .use(express.json())
   .get("/health", (_req, res) => res.send("OK!"))
-  .use("/user", userRouter)
+  .use("/users", userRouter)
   .use("/credential", credentialRouter)
   .use("/wifi", wifiRouter)
   .use(handleApplicationErrors);

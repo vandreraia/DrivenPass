@@ -4,7 +4,7 @@ import faker from "@faker-js/faker";
 describe("createUserSchema", () => {
   const generateValidInput = () => ({
     email: faker.internet.email(),
-    password: faker.internet.password(6),
+    password: faker.internet.password(10),
   });
 
   describe("when email is not valid", () => {
@@ -37,7 +37,7 @@ describe("createUserSchema", () => {
       expect(error).toBeDefined();
     });
 
-    it("should return error if password is shorter than 6 characters", () => {
+    it("should return error if password is shorter than 10 characters", () => {
       const input = generateValidInput();
       input.password = faker.lorem.word(5);
 

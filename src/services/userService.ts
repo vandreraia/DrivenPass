@@ -21,7 +21,6 @@ export async function checkUser(email: string, password: string) {
 }
 
 export async function generateToken(userId: string) {
-  console.log(userId)
   const token = jwt.sign(userId, process.env.SECRET)
 
   return token;

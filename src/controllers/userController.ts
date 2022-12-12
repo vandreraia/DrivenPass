@@ -10,7 +10,7 @@ export async function postUser(req: Request, res: Response) {
 
     return res.sendStatus(httpStatus.CREATED);
   } catch (error) {
-    if (error === "Unprocessable") return res.sendStatus(httpStatus.UNPROCESSABLE_ENTITY);
+    if (error === "UNPROCESSABLE_ENTITY") return res.sendStatus(httpStatus.UNPROCESSABLE_ENTITY);
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 }
@@ -29,7 +29,7 @@ export async function signIn(req: Request, res: Response) {
 
     return res.status(httpStatus.OK).send(data);
   } catch (error) {
-    if (error === "Unprocessable") return res.sendStatus(httpStatus.UNPROCESSABLE_ENTITY);
+    if (error === "UNPROCESSABLE_ENTITY") return res.sendStatus(httpStatus.UNPROCESSABLE_ENTITY);
     if (error === "UNAUTHORIZED") return res.sendStatus(httpStatus.UNAUTHORIZED);
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
