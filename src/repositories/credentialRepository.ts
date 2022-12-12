@@ -37,7 +37,7 @@ export async function findCredential(userId: number) {
   })
 }
 
-export async function removeCredential(id:number) {
+export async function removeCredential(id: number) {
   return prisma.credential.delete({
     where: {
       id

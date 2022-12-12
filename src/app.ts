@@ -6,6 +6,7 @@ import { userRouter } from "./routers/userRouter";
 import { handleApplicationErrors } from "@/middlewares";
 import { loadEnv, connectDb, disconnectDB } from "@/config";
 import { credentialRouter } from "./routers/credetialRouter";
+import { wifiRouter } from "./routers/wifiRouter";
 
 loadEnv();
 
@@ -16,6 +17,7 @@ app
   .get("/health", (_req, res) => res.send("OK!"))
   .use("/user", userRouter)
   .use("/credential", credentialRouter)
+  .use("/wifi", wifiRouter)
   .use(handleApplicationErrors);
 
 export function init(): Promise<Express> {

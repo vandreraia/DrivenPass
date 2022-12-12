@@ -20,7 +20,7 @@ export async function findCredentialById(id: number, authorization: string) {
   const credential = await credentialRepository.findCredentialById(id);
   if (!credential) throw "NOT_FOUND";
   if (userId !== credential.userId) throw "CONFLICT";
-  
+
   decrypt(credential);
 
   return credential;
