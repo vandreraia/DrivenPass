@@ -17,5 +17,6 @@ export default function getUserIdByToken(authorization: string) {
     if (error) throw "UNPROCESSABLE_ENTITY";
   })
   const decoded = jwt.decode(token) as tokenData;
-  return decoded.userId;
+  if (decoded.userId) return decoded.userId;
+  return decoded;
 };

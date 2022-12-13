@@ -118,8 +118,16 @@ describe("GET /credential", () => {
       const credential = await createCredential(user.id)
 
       const response = await server.get(`/credential?id=${credential.id}`).set("authorization", `Bearer ${token}`);
+      expect(response.status).toEqual(httpStatus.OK);
 
-      expect(response.status).toEqual(httpStatus.OK)
+      expect(response.body).toEqual({
+        id: credential.id,
+        username: credential.username,
+        password: expect.any(String),
+        title: credential.title,
+        url: credential.url,
+        userId: credential.userId
+      });
     });
 
     it("should return with status 200 and credentials", async () => {
@@ -130,6 +138,15 @@ describe("GET /credential", () => {
       const response = await server.get(`/credential`).set("authorization", `Bearer ${token}`);
 
       expect(response.status).toEqual(httpStatus.OK)
+
+      expect(response.body).toEqual([{
+        id: credential.id,
+        username: credential.username,
+        password: expect.any(String),
+        title: credential.title,
+        url: credential.url,
+        userId: credential.userId
+      }]);
     });
   })
 })

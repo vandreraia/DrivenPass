@@ -101,14 +101,40 @@ describe("GET /wifi", () => {
       expect(response.status).toBe(httpStatus.FORBIDDEN);
     });
 
-    it("should return with status 200", async () => {
+    it("should return with status 200 and the wifi with corresponding id", async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const wifi = await createWifi(user.id)
 
       const response = await server.get(`/wifi?id=${wifi.id}`).set("authorization", `Bearer ${token}`);
 
-      expect(response.status).toEqual(httpStatus.OK)
+      expect(response.status).toEqual(httpStatus.OK);
+
+      expect(response.body).toEqual({
+        id: wifi.id,
+        network: wifi.network,
+        password: expect.any(String),
+        title: wifi.title,
+        userId: wifi.userId
+      });
+    });
+
+    it("should return with status 200 and wifi", async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const wifi = await createWifi(user.id)
+
+      const response = await server.get(`/wifi`).set("authorization", `Bearer ${token}`);
+
+      expect(response.status).toEqual(httpStatus.OK);
+
+      expect(response.body).toEqual([{
+        id: wifi.id,
+        network: wifi.network,
+        password: expect.any(String),
+        title: wifi.title,
+        userId: wifi.userId
+      }]);
     });
   })
 })

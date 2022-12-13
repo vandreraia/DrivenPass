@@ -3,8 +3,6 @@ import * as wifiRepository from "@/repositories/wifiRepository";
 import Cryptr from "cryptr";
 import { Network } from "@prisma/client";
 
-const cryptr = new Cryptr(process.env.SECRET)
-
 export async function findWifiById(id: number, authorization: string) {
   const userId = Number(getUserIdByToken(authorization));
 
@@ -34,12 +32,14 @@ export async function insertWifi(title: string, name: string, password: string, 
   const wifi = await wifiRepository.findWifiByUserIdAndTitle(userId, title);
   if (wifi) throw "CONFLICT";
 
+  const cryptr = new Cryptr(process.env.SECRET);
   const encryptedString = cryptr.encrypt(password);
 
   await wifiRepository.insertWifi(title, name, encryptedString, userId);
 }
 
 function decrypt(wifi: Network) {
+  const cryptr = new Cryptr(process.env.SECRET);
   const decryptedPassword = cryptr.decrypt(wifi.password);
   wifi.password = decryptedPassword;
 

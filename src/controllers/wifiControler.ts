@@ -26,7 +26,6 @@ export async function postWifi(req: Request, res: Response) {
 
     return res.sendStatus(httpStatus.CREATED)
   } catch (error) {
-    console.log(error)
     if (error === "UNPROCESSABLE_ENTITY") return res.sendStatus(httpStatus.UNPROCESSABLE_ENTITY);
     if (error === "CONFLICT") return res.sendStatus(httpStatus.CONFLICT);
     return res.sendStatus(httpStatus.BAD_REQUEST)
