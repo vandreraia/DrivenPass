@@ -3,11 +3,10 @@ import getUserIdByToken from "@/utils/verifyToken";
 import { Credential } from "@prisma/client";
 import Cryptr from "cryptr";
 
-export async function postCredential(title: string, username: string, password: string, url: string, authorization: string) {
+export async function postCredential(url: string, username: string, password: string, title: string, authorization: string) {
   const userId = Number(getUserIdByToken(authorization));
 
   const credential = await credentialRepository.findCredentialByUserIdAndTitle(userId, title);
-
   if (credential) throw "CONFLICT";
 
   const cryptr = new Cryptr(process.env.SECRET);
@@ -17,6 +16,7 @@ export async function postCredential(title: string, username: string, password: 
 
 export async function findCredentialById(id: number, authorization: string) {
   const userId = Number(getUserIdByToken(authorization));
+
   const credential = await credentialRepository.findCredentialById(id);
   if (!credential) throw "NOT_FOUND";
   if (userId !== credential.userId) throw "FORBIDDEN";
@@ -28,6 +28,7 @@ export async function findCredentialById(id: number, authorization: string) {
 
 export async function findCredential(authorization: string) {
   const userId = Number(getUserIdByToken(authorization));
+
   const credentials = await credentialRepository.findCredential(userId);
   if (!credentials) throw "NOT_FOUND";
 
@@ -37,7 +38,7 @@ export async function findCredential(authorization: string) {
 }
 
 function decrypt(credential: Credential) {
-  const cryptr = new Cryptr(process.env.SECRET)
+  const cryptr = new Cryptr(process.env.SECRET);
   const decryptedPassword = cryptr.decrypt(credential.password);
   credential.password = decryptedPassword;
 
@@ -51,7 +52,7 @@ export async function removeCredential(id: number, authorization: string) {
 
   const credential = await credentialRepository.findCredentialById(id);
   if (!credential) throw "NOT_FOUND";
-  if (userId !== credential.userId) throw "CONFLICT";
+  if (userId !== credential.userId) throw "FORBIDDEN";
 
   await credentialRepository.removeCredential(id);
 }

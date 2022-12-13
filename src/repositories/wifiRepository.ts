@@ -6,7 +6,7 @@ export async function insertWifi(title: string, network: string, password: strin
       title,
       network,
       password,
-      userId
+      userId: 477
     }
   })
 }

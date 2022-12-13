@@ -1,4 +1,4 @@
-import { findWifi, findWifiById, insertWifi } from "@/services/wifiService";
+import { deleteWifi, findWifi, findWifiById, insertWifi } from "@/services/wifiService";
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 
@@ -26,19 +26,22 @@ export async function postWifi(req: Request, res: Response) {
 
     return res.sendStatus(httpStatus.CREATED)
   } catch (error) {
-    console.log(error.message)
+    console.log(error)
+    if (error === "UNPROCESSABLE_ENTITY") return res.sendStatus(httpStatus.UNPROCESSABLE_ENTITY);
     if (error === "CONFLICT") return res.sendStatus(httpStatus.CONFLICT);
     return res.sendStatus(httpStatus.BAD_REQUEST)
   }
 }
 
-export async function deleteWifi(req: Request, res: Response) {
+export async function removeWifi(req: Request, res: Response) {
   const { authorization } = req.headers;
   const { id } = req.query;
 
   try {
-    
+    await deleteWifi(Number(id), authorization);
+    return res.sendStatus(httpStatus.OK)
   } catch (error) {
+    if (error === "UNPROCESSABLE_ENTITY") return res.sendStatus(httpStatus.UNPROCESSABLE_ENTITY);
     if (error === "FORBIDDEN") return res.sendStatus(httpStatus.FORBIDDEN);
     if (error === "NOT_FOUND") return res.sendStatus(httpStatus.NOT_FOUND);
     return res.sendStatus(httpStatus.BAD_REQUEST)
